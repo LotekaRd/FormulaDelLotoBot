@@ -1,27 +1,20 @@
-from telegram import Update
-from telegram.ext import Updater, CommandHandler, CallbackContext
 
-# Fonction de démarrage
-def start(update: Update, context: CallbackContext):
-    update.message.reply_text("Bienvenue sur La Fórmula del Loto ! Tapez /menu pour voir les options.")
 
-# Fonction de menu
-def menu(update: Update, context: CallbackContext):
-    update.message.reply_text('Choisissez une option: \n1. Accéder à l’abonnement\n2. Informations sur les paiements\n3. FAQ')
+import asyncio
+from telegram.ext import Application
 
-# Lancer le bot
-def main():
-    # Remplace 'YOUR_TOKEN' par ton token d'API
-    updater = Updater("YOUR_TOKEN", use_context=True)
-    
-    dp = updater.dispatcher
-    
-    # Commandes du bot
-    dp.add_handler(CommandHandler("start", start))
-    dp.add_handler(CommandHandler("menu", menu))
-    
-    updater.start_polling()
-    updater.idle()
+TOKEN = "7606091350:AAGEKVoR0E-D5rdRQk36LIwdHGlDhlXD4Hw"
 
-if __name__ == '__main__':
-    main()
+async def main():
+    application = Application.builder().token(TOKEN).build()
+    # Ajouter vos gestionnaires ici
+    await application.run_polling()
+
+# Utiliser asyncio pour détecter si une boucle existe déjà
+try:
+    asyncio.get_running_loop()
+    # Si une boucle existe déjà, utiliser create_task
+    asyncio.create_task(main())
+except RuntimeError:
+    # Sinon, démarrer une nouvelle boucle
+    asyncio.run(main())
